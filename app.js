@@ -177,3 +177,9 @@ app.use((err, req, res, next) => {
 app.listen(port, () => {
     console.log(`Server is running at port number ${port}`);
 })
+// aaj 08 aug ko maine ish project ko github pe push kiya hu 
+//use this steps to push
+
+// git add .
+// git commit -m "your message"
+// git push
