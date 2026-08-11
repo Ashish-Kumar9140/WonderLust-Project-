@@ -34,7 +34,7 @@ function validateListing(req, res, next) {
 }
 
 
-function validatereview(req, res, next) {
+function validateReview(req, res, next) {
     const { error } = reviewSchema1.validate(req.body);
     if (error) {
         const msg = error.details.map(el => el.message).join(',');
@@ -129,7 +129,7 @@ app.delete('/listings/:id', wrapAsync(async (req, res) => {
 
 //review route to handle submission of a new review for a specific listing by ID
 //post route to handle submission of a new review for a specific listing by ID
-app.post('/listings/:id/reviews',wrapAsync(async (req, res) => {
+app.post('/listings/:id/reviews',validateReview,wrapAsync(async (req, res) => {
     try {
         const { id } = req.params;
         const listing = await Listing.findById(id);
@@ -167,7 +167,7 @@ app.delete("/listings/:id/reviews/:reviewsId", wrapAsync(async (req ,res)=>{
 app.get('/listings/:id',wrapAsync(async (req, res) => {
     try {
         const { id } = req.params;
-        const listing = await Listing.findById(id);
+        const listing = await Listing.findById(id).populate('reviews');
         res.render('listings/show.ejs', { listing });
     } catch (err) {
         console.error("Error fetching listing:", err);
