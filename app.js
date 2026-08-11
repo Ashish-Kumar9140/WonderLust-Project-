@@ -9,7 +9,7 @@ const ejsmate = require('ejs-mate');
 const wrapAsync = require('./utils/wrapAsync.js');
 const ExpressError = require('./utils/ExpessError.js');
 const {listingschema,reviewSchema1} = require('./schema.js');
-const { reviewSchema, Review } = require('./models/reviews.js');
+const Review = require('./models/reviews.js');
 
 
 
@@ -48,7 +48,7 @@ async function main(){
     await mongoose.connect(mon_url);
 }
 main().then(() => {
-    console.log("MongoDB connected successfully");
+    console.log("MongoDB connected");
 }).catch((err) => {
     console.log("MongoDB connection failed", err);
 });
@@ -133,17 +133,34 @@ app.post('/listings/:id/reviews',wrapAsync(async (req, res) => {
     try {
         const { id } = req.params;
         const listing = await Listing.findById(id);
-        const review = new Review(req.body.review);
-        listing.reviews.push(review);
-        await review.save();
+        const newReview = new Review(req.body.review);
+        listing.reviews.push(newReview);
+
+        await newReview.save();
         await listing.save();
+
         console.log("Review added successfully");
         res.redirect(`/listings/${id}`);
+      
+
+
     } catch (err) {
         console.error("Error adding review:", err);
         res.status(500).send("Internal Server Error");
     }
 }));
+
+
+//reviews ka delete route ye hai 
+app.delete("/listings/:id/reviews/:reviewsId", wrapAsync(async (req ,res)=>{
+    let {id , reviewsId}= req.params;
+
+    await Listing.findByIdAndUpdate(id ,{$pull : {reviews : reviewsId}});
+    await Review.findByIdAndDelete({reviewsId});
+    console.log("reviews delete successful");
+
+    res.redirect(`/listings/${id}`);
+}))
 
 
 // show route to display a specific listing by ID
@@ -175,11 +192,12 @@ app.use((err, req, res, next) => {
 
 
 app.listen(port, () => {
-    console.log(`Server is running at port number ${port}`);
+    console.log(`Server is running on ${port}`);
 })
 // aaj 08 aug ko maine ish project ko github pe push kiya hu 
 //use this steps to push
 
+//checking is git working or not
 // git add .
 // git commit -m "your message"
 // git push
