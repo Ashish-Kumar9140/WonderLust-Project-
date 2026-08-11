@@ -139,11 +139,8 @@ app.post('/listings/:id/reviews',validateReview,wrapAsync(async (req, res) => {
         await newReview.save();
         await listing.save();
 
-        console.log("Review added successfully");
         res.redirect(`/listings/${id}`);
       
-
-
     } catch (err) {
         console.error("Error adding review:", err);
         res.status(500).send("Internal Server Error");
@@ -152,12 +149,11 @@ app.post('/listings/:id/reviews',validateReview,wrapAsync(async (req, res) => {
 
 
 //reviews ka delete route ye hai 
-app.delete("/listings/:id/reviews/:reviewsId", wrapAsync(async (req ,res)=>{
-    let {id , reviewsId}= req.params;
+app.delete("/listings/:id/reviews/:reviewId", wrapAsync(async (req ,res)=>{
+    let {id , reviewId}= req.params;
 
-    await Listing.findByIdAndUpdate(id ,{$pull : {reviews : reviewsId}});
-    await Review.findByIdAndDelete({reviewsId});
-    console.log("reviews delete successful");
+    await Listing.findByIdAndUpdate(id ,{$pull : {reviews : reviewId}});
+    await Review.findByIdAndDelete(reviewId);
 
     res.redirect(`/listings/${id}`);
 }))

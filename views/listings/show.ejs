@@ -70,11 +70,11 @@
                     <div class="card-body">
 
                         <h5 class="card-title">Ashish kumar  </h5>
-                        <p class="card-text">comment: <%= review.comment %> </p>
-                        <p class="card-text">Rating: <%= review.rating %> stars</p>
+                       <span class="card-text"> comment: <%= review.comment %> 
+                          <%= review.rating %> stars</span>
                         
                     </div>
-                    <form class="mb-3" action="/listings/<%= listing._id %>/reviews/<%= review._id%>?_method=DELETE" method="POST">
+                    <form class="mb-3" method="POST" action="/listings/<%= listing._id %>/reviews/<%= review._id %>?_method=DELETE">
                         <button class="btn btn-sm btn-dark"> Delete</button>
                     </form>
                 </div>
