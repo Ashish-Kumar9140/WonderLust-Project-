@@ -54,6 +54,7 @@ router.get('/:id/edit',wrapAsync(async (req, res) => {
     try {
         const { id } = req.params;
         const listing = await Listing.findById(id);
+        
         res.render('listings/edit.ejs', { listing });
     } catch (err) {
         console.error("Error fetching listing for edit:", err);
@@ -66,6 +67,7 @@ router.put('/:id', wrapAsync(async (req, res) => {
     try {
         const { id } = req.params;
         await Listing.findByIdAndUpdate(id, req.body);
+         req.flash("success" ," Updated listing!");
         res.redirect(`/listings/${id}`);
     } catch (err) {
         console.error("Error updating listing:", err);
@@ -79,6 +81,7 @@ router.delete('/:id', wrapAsync(async (req, res) => {
     try {
         const { id } = req.params;
         await Listing.findByIdAndDelete(id);
+         req.flash("success" ," Deleted listing!");
         res.redirect('/listings');
         
     } catch (err) {
