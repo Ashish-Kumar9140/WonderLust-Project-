@@ -67,7 +67,8 @@ router.put('/:id', wrapAsync(async (req, res) => {
     try {
         const { id } = req.params;
         await Listing.findByIdAndUpdate(id, req.body);
-         req.flash("success" ," Updated listing!");
+       
+        req.flash("success" ," Updated listing!");
         res.redirect(`/listings/${id}`);
     } catch (err) {
         console.error("Error updating listing:", err);
@@ -96,6 +97,10 @@ router.get('/:id',wrapAsync(async (req, res) => {
     try {
         const { id } = req.params;
         const listing = await Listing.findById(id).populate('reviews');
+        if(!Listing){
+            req.flash("error" ," This listing does not exist");
+            res.redirect("/listings");
+        }
         res.render('listings/show.ejs', { listing });
     } catch (err) {
         console.error("Error fetching listing:", err);
