@@ -40,6 +40,7 @@ router.post('/', wrapAsync(async (req, res) => {
     try {
         const newListing = new Listing(req.body);
         await newListing.save();
+        req.flash("success" ," new listing Created!");
         res.redirect('/listings');
         console.log("New listing created successfully");
     } catch (err) {

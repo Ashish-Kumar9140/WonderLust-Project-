@@ -7,6 +7,8 @@ const methodOverride = require('method-override');
 const ejsmate = require('ejs-mate');
 const ExpressError = require('./utils/ExpessError.js');
 const Review = require('./models/reviews.js');
+const session = require('express-session');
+const flash = require('connect-flash');
 
 const listings = require("./routers/listing.js");
 const reviews = require("./routers/review.js");
@@ -34,11 +36,28 @@ main().then(() => {
     console.log("MongoDB connection failed", err);
 });
 
+// session options
+const sessioOptions = {
+    secret:"mycode",
+    resave: false,
+    saveUninitialized:true,
+    cookie:{ 
+        expires: Date.now() + 7 * 24 * 60 * 60 * 1000,
+        maxAge : 7 * 24 * 60 * 60 * 1000,
+        httpOnly : true,
 
-
+    },
+};
 // route to display the home page
-app.get('/', (req, res) => {
+app.get('/', (req, res) => { 
     res.send("Hello World");
+});
+app.use(session(sessioOptions));
+app.use(flash());
+
+app.use((req,res,next)=>{
+    res.locals.success = req.flash("success");
+    next();
 });
 
 app.use("/listings", listings);
