@@ -9,10 +9,13 @@ const ExpressError = require('./utils/ExpessError.js');
 const Review = require('./models/reviews.js');
 const session = require('express-session');
 const flash = require('connect-flash');
+const passport = require('passport');
+const LocalStrategy = require('passport-local');
+const User = require('./models/user.js');
 
-const listings = require("./routers/listing.js");
-const reviews = require("./routers/review.js");
-
+const listingsRouter = require("./routers/listing.js");
+const reviewsRouter = require("./routers/review.js");
+const userRouter = require("./routers/user.js");
 
 
 // Define the port number for the server to listen on
@@ -54,7 +57,14 @@ app.get('/', (req, res) => {
 });
 
 app.use(session(sessioOptions));
-app.use(flash());
+app.use(flash()); 
+
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(new LocalStrategy(User.authenticate()));
+
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
 
 app.use((req,res,next)=>{
     res.locals.success = req.flash("success");
@@ -62,9 +72,21 @@ app.use((req,res,next)=>{
     next();
 });
 
-app.use("/listings", listings);
-app.use("/listings/:id/reviews", reviews);
- 
+
+app.get("/demouser", async (req,res)=>{
+    let fakeUser = new User({
+        email: "student@gmail.som",
+        username : "delta-student",
+    })
+
+    let registeredUser = await User.register(fakeUser , "helloworld");
+    res.send(registeredUser);
+})
+
+app.use("/listings", listingsRouter);
+app.use("/listings/:id/reviews", reviewsRouter);
+app.use("/", userRouter);
+
 app.all('/*splat', (req, res, next) => {
     next(new ExpressError('Page Not Found', 404));
 });
@@ -77,7 +99,7 @@ app.use((err, req, res, next) => {
     res.render('error.ejs', { statusCode: err.statusCode  || 400,errorMessage: err.message });
 });
 
-
+ 
 
 app.listen(port, () => {
     console.log(`Server is running on ${port}`);
