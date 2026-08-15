@@ -3,7 +3,7 @@ const listingschema = joi.object({
     title:joi.string().required(),
     description:joi.string().required(),
     image:joi.object({
-        filename:joi.string().required(),
+        filename:joi.string(),
         url:joi.string().allow("" , null),
     }).required(),
     price:joi.number().required(),

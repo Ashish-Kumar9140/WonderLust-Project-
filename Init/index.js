@@ -3,7 +3,6 @@ const initdata = require('./data.js');
 const {Listing} = require('../models/listing.js');
 
 
-
 const mon_url = "mongodb://127.0.0.1:27017/wanderlust1";
 async function main(){
     await mongoose.connect(mon_url);
@@ -16,6 +15,7 @@ main().then(() => {
 
 const initDB = async () => {
     await Listing.deleteMany({});
+    initdata.data = initdata.data.map((obj)=>({...obj, owner : "6a7dc73533be11740ff6e7f8"}));
     await Listing.insertMany(initdata.data);
     console.log("Database initialized with sample data.");
     console.log("data is saved in the database");
