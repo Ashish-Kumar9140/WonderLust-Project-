@@ -4,7 +4,7 @@ const wrapAsync = require('../utils/wrapAsync.js');
 const { Listing } = require('../models/listing.js');
 const ExpressError = require('../utils/ExpessError.js');
 const { listingschema } = require('../schema.js');
-const {isloggedIn} = require("../Middleware.js");
+const { isloggedIn } = require("../Middleware.js");
 
 
 
@@ -31,7 +31,7 @@ router.get('/', wrapAsync(async (req, res) => {
     }
 }));
 //adding a new listing
-router.get('/new',isloggedIn, (req, res) => {
+router.get('/new', isloggedIn, (req, res) => {
     res.render('listings/new.ejs');
 });
 
@@ -53,7 +53,7 @@ router.post('/', wrapAsync(async (req, res) => {
 }));
 
 //edit route to display the edit form for a specific listing by ID
-router.get('/:id/edit',isloggedIn, wrapAsync(async (req, res) => {
+router.get('/:id/edit', isloggedIn, wrapAsync(async (req, res) => {
     try {
         const { id } = req.params;
         const listing = await Listing.findById(id);
@@ -65,23 +65,31 @@ router.get('/:id/edit',isloggedIn, wrapAsync(async (req, res) => {
     }
 }));
 
-//edit route to handle form submission and update the listing in the database
-router.put('/:id',isloggedIn, wrapAsync(async (req, res) => {
+//Update route to handle form submission and update the listing in the database
+router.put('/:id', isloggedIn, wrapAsync(async (req, res) => {
     try {
         const { id } = req.params;
+        let listing = await Listing.findById(id);
+        if (
+            res.locals.currUser &&
+            !listing.owner._id.equals(res.locals.currUser._id)
+        ) {
+            req.flash("error", "You don't have access to update this listing");
+            return res.redirect(`/listings/${id}`);
+        }
         await Listing.findByIdAndUpdate(id, req.body);
 
         req.flash("success", " Updated listing!");
         res.redirect(`/listings/${id}`);
     } catch (err) {
         console.error("Error updating listing:", err);
-        res.status(500).send("Internal Server Error");
+        res.status(500).send("Internal Server Error in updat.ejs");
     }
 }));
 
 
 // Delete route to handle deletion of a specific listing by ID
-router.delete('/:id',isloggedIn, wrapAsync(async (req, res) => {
+router.delete('/:id', isloggedIn, wrapAsync(async (req, res) => {
     try {
         const { id } = req.params;
         await Listing.findByIdAndDelete(id);
@@ -100,7 +108,7 @@ router.get('/:id', wrapAsync(async (req, res) => {
     try {
         const { id } = req.params;
         const listing = await Listing.findById(id).populate('reviews').populate('owner');
-       
+
         if (!Listing) {
             req.flash("error", " This listing does not exist");
             res.redirect("/listings");
