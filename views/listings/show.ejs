@@ -23,11 +23,18 @@
             </div>
             <div class="col col-md-8 offset-md-2 mt-3">
                 <a href="/listings" class="btn btn-secondary">Back to Listings</a>
-                <a href="/listings/<%= listing.id %>/edit" class="btn btn-primary">Edit Listing</a>
-                <form action="/listings/<%= listing.id %>?_method=DELETE" method="POST" style="display:inline;">
-                    <input type="hidden" name="_method" value="DELETE">
-                    <button type="submit" class="btn btn-danger">Delete Listing</button>
-                </form>
+                <% if(currUser && currUser._id.equals(listing.owner._id)) { %>
+                
+
+                    <a href="/listings/<%= listing.id %>/edit" class="btn btn-primary">Edit Listing</a>
+
+
+                    <form action="/listings/<%= listing.id %>?_method=DELETE" method="POST" style="display:inline;">
+                        <input type="hidden" name="_method" value="DELETE">
+                        <button type="submit" class="btn btn-danger">Delete Listing</button>
+                    </form>
+            
+                <% } %>
             </div>
 
             <div class="col col-md-8 offset-md-2 mt-3 mb-3 ">
