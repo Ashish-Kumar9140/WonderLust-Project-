@@ -2,60 +2,58 @@ const express = require("express")
 const router = express.Router({ mergeParams: true });
 
 const Review = require("../models/reviews");
-const {Listing} = require('../models/listing.js');
+const { Listing } = require('../models/listing.js');
 const { model } = require("mongoose");
 const wrapAsync = require('../utils/wrapAsync.js');
-const {listingschema,reviewSchema1} = require('../schema.js');
+const { listingschema, reviewSchema1 } = require('../schema.js');
 const ExpressError = require('../utils/ExpessError.js');
+const { isloggedIn, isOwner, validateListing, validateReview,isreviewAuthor } = require("../Middleware.js");
 
-function validateReview(req, res, next) {
-    const { error } = reviewSchema1.validate(req.body);
-    if (error) {
-        const msg = error.details.map(el => el.message).join(',');
-        throw new ExpressError(msg, 400);
-    }else {
-        next();
-    }
-}
+
 //review route to handle submission of a new review for a specific listing by ID
 //post route to handle submission of a new review for a specific listing by ID
-router.post('/',validateReview,wrapAsync(async (req, res) => {
-    try {
+router.post(
+    "/",
+    isloggedIn,
+    validateReview,
+    wrapAsync(async (req, res) => {
+
         const { id } = req.params;
+
         const listing = await Listing.findById(id);
+
         const newReview = new Review(req.body.review);
+        newReview.author = req.user._id;
+
         listing.reviews.push(newReview);
 
         await newReview.save();
         await listing.save();
-         req.flash("success" ," New review created!");
 
-        res.redirect(`/listings/${id}`);
-      
-    } catch (err) {
-        console.error("Error adding review:", err);
-        res.status(500).send("Internal Server Error review post");
-    }
-}));
+        req.flash("success", "New review created!");
+
+        return res.redirect(`/listings/${id}`);
+    })
+);
 
 
 //reviews ka delete route ye hai 
-router.delete("/:reviewId", wrapAsync(async (req ,res)=>{
-    try{
-        let {id , reviewId}= req.params;
+router.delete("/:reviewId",isloggedIn,isreviewAuthor, wrapAsync(async (req, res) => {
+    try {
+        let { id, reviewId } = req.params;
 
-    await Listing.findByIdAndUpdate(id ,{$pull : {reviews : reviewId}});
-    await Review.findByIdAndDelete(reviewId);
-    req.flash("success" ,"  review deleted!");
+        await Listing.findByIdAndUpdate(id, { $pull: { reviews: reviewId } });
+        await Review.findByIdAndDelete(reviewId);
+        req.flash("success", "  review deleted!");
 
-    res.redirect(`/listings/${id}`);
+        res.redirect(`/listings/${id}`);
 
     }
-    catch{
-         console.error("Error adding review:", err);
+    catch {
+        console.error("Error adding review:", err);
         res.status(500).send("Internal Server Error review delete");
     }
-    
+
 }))
 
 module.exports = router;
