@@ -16,9 +16,10 @@ const reviewControllers = require('../controllers/reviews.js');
 router.post(
     "/",
     isloggedIn,
-    validateReview,
+    // validateReview,
     wrapAsync(reviewControllers.createReview)
 );
+
 
 
 //reviews ka delete route ye hai 

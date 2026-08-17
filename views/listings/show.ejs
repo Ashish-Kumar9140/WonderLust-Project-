@@ -57,7 +57,7 @@
                             <input type="range" name="review[rating]" min="1" max="5" id="rating" required>
                         </div> -->
                          <div class="mb-3 mt-3"> 
-                             <label for="rating" class="form-label">Rating:</label>
+                             <label for="rating[rating]" class="form-label">Rating:</label>
                         <fieldset class="starability-slot">
                            
                             <input type="radio" id="no-rate" class="input-no-rate" name="rating[rating]" value="1" checked
@@ -100,7 +100,7 @@
 
             <hr>
             <p><b>All Reviews</b></p>
-
+ 
             <div class="row">
                 <% for (const review of listing.reviews) { %>
                     <div class="card col-5 ms-3 mb-3">
@@ -109,8 +109,8 @@
                             <h5 class="card-title">@<%= review.author.username %>
                             </h5>
 
-                             <p class="starability-result card-text" data-rating="3">
-                                <%= review.rating %>
+                             <p class="starability-result card-text" data-rating="<%= review.rating %>">
+                                <!-- <%= review.rating %> -->
                             </p>
 
                             <p class="card-text"> comment: <%= review.comment %> </p>
