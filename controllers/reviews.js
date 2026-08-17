@@ -18,7 +18,7 @@ const Review = require("../models/reviews");
         req.flash("success", "New review created!");
 
         return res.redirect(`/listings/${id}`);
-    }
+    } 
 
     module.exports.deleteReview = async (req, res) => {
     try {
@@ -37,3 +37,4 @@ const Review = require("../models/reviews");
     }
 
     }
+    
