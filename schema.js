@@ -5,7 +5,7 @@ const listingschema = joi.object({
     image:joi.object({
         filename:joi.string(),
         url:joi.string().allow("" , null),
-    }).required(),
+    }).allow(null),
     price:joi.number().required(),
     location:joi.string().required(),
     country:joi.string().required()

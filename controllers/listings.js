@@ -12,7 +12,7 @@ module.exports.index = async (req, res) => {
     }
 }
 
-module.exports.renderNewForm =  (req, res) => {
+module.exports.renderNewForm = (req, res) => {
     res.render('listings/new.ejs');
 }
 
@@ -22,7 +22,7 @@ module.exports.showPage = async (req, res) => {
         const { id } = req.params;
 
         const listing = await Listing.findById(id)
-            .populate({ path: 'reviews', populate: { path: 'author'} })
+            .populate({ path: 'reviews', populate: { path: 'author' } })
             .populate('owner');
 
         if (!listing) {
@@ -39,13 +39,13 @@ module.exports.showPage = async (req, res) => {
 
 module.exports.newlistingPost = async (req, res) => {
     try {
-        let url  = req.file.path;
+        let url = req.file.path;
         let filename = req.file.filename;
-        console.log(url + ".." + filename);
+
         const newListing = new Listing(req.body);
 
         newListing.owner = req.user._id;
-        newListing.image = {url:url ,filename:filename};
+        newListing.image = { url: url, filename: filename };
         await newListing.save();
 
         req.flash("success", " new listing Created!");
@@ -74,8 +74,16 @@ module.exports.editFormRender = async (req, res) => {
 module.exports.udateEditformPUT = async (req, res) => {
     try {
         const { id } = req.params;
+
         let listing = await Listing.findById(id);
         await Listing.findByIdAndUpdate(id, req.body);
+
+        if (typeof req.file !== "undefined") {
+            let url = req.file.path;
+            let filename = req.file.filename;
+            listing.image = { url: url, filename: filename };
+            await listing.save();
+        }
 
         req.flash("success", " Updated listing!");
         res.redirect(`/listings/${id}`);

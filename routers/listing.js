@@ -33,7 +33,7 @@ router.get('/:id/edit', isloggedIn, wrapAsync(listingsControllers.editFormRender
 
 
 //Update route to handle form submission and update the listing in the database
-router.put('/:id', isloggedIn, isOwner, validateListing, wrapAsync(listingsControllers.udateEditformPUT));
+router.put('/:id', isloggedIn, isOwner,upload.single('image[url]'), validateListing, wrapAsync(listingsControllers.udateEditformPUT));
 
 
 // Delete route to handle deletion of a specific listing by ID
