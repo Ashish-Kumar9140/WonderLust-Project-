@@ -7,6 +7,10 @@ const { listingschema } = require('../schema.js');
 const { isloggedIn, isOwner, validateListing } = require("../Middleware.js");
 const listingsControllers = require('../controllers/listings.js');
 
+const multer  = require('multer')
+const {storage} = require("../cloudConfig.js");
+const upload = multer({ storage })
+
 
 
 
@@ -20,7 +24,8 @@ router.get('/new', isloggedIn,listingsControllers.renderNewForm);
 
 
 // Create route to handle form submission and save new listing to the database
-router.post('/', isloggedIn, wrapAsync(listingsControllers.newlistingPost));
+router.post('/', isloggedIn,upload.single('image[url]'), wrapAsync(listingsControllers.newlistingPost));
+
 
 
 //edit route to display the edit form for a specific listing by ID

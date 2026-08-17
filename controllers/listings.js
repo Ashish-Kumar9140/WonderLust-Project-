@@ -39,12 +39,19 @@ module.exports.showPage = async (req, res) => {
 
 module.exports.newlistingPost = async (req, res) => {
     try {
+        let url  = req.file.path;
+        let filename = req.file.filename;
+        console.log(url + ".." + filename);
         const newListing = new Listing(req.body);
+
         newListing.owner = req.user._id;
+        newListing.image = {url:url ,filename:filename};
         await newListing.save();
+
         req.flash("success", " new listing Created!");
         res.redirect('/listings');
         console.log("New listing created successfully");
+
     } catch (err) {
         console.error("Error creating listing:", err);
         res.status(500).send("Internal Server Error");

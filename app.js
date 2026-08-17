@@ -1,3 +1,8 @@
+if(process.env.NODE_ENV != "production"){
+require('dotenv').config();
+}
+
+
 const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
@@ -16,6 +21,8 @@ const User = require('./models/user.js');
 const listingsRouter = require("./routers/listing.js");
 const reviewsRouter = require("./routers/review.js");
 const userRouter = require("./routers/user.js");
+
+
 
 
 // Define the port number for the server to listen on
