@@ -82,3 +82,10 @@ body{
     object-fit: cover;
     border-radius: 10px;
 }
+
+
+.editImage{
+    width: 150px;
+    height: auto;
+
+}
