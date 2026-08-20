@@ -8,6 +8,7 @@ const app = express();
 const mongoose = require('mongoose');
 const mon_url = "mongodb://127.0.0.1:27017/wanderlust1";
 const path = require('path');
+const { Listing } = require('./models/listing.js');
 const methodOverride = require('method-override');
 const ejsmate = require('ejs-mate');
 const ExpressError = require('./utils/ExpessError.js');
@@ -59,9 +60,7 @@ const sessioOptions = {
     },
 };
 // route to display the home page
-app.get('/', (req, res) => { 
-    res.send("Hello World");
-});
+//  
 
 app.use(session(sessioOptions));
 app.use(flash()); 

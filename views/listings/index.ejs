@@ -11,14 +11,14 @@
         <div class="row row-cols-1 row-cols-md-3 g-4">
             <% for (let listing of allListings) { %>
                 <a href="/listings/<%= listing._id %>" class="text-decoration-none text-dark">
-            <div class="card" style="width: 20rem;">
+            <div class="card card1" style="width: 20rem;">
                 <img src="<%= listing.image.url %>" class="card-img-top" alt="<%= listing.title %>">
                 <div class="card-body">
                    <b> <p class="card-text">Title: <%= listing.title %></b> <br>
-                            <%= listing.description %> <br>
+                            <!-- <%= listing.description %> <br> -->
                               $<%= listing.price %>/Night<br>
                                     <%= listing.location %> <br>
-                                        <%= listing.country %><br>
+                                        <!-- <%= listing.country %><br> -->
                     </p>
 
 
