@@ -14,11 +14,11 @@ body{
     padding: 10px;
     text-align: center;
 }
-.fa-solid{
+.fa-solidhome{
     color: rgb(224, 7, 7);
 }
 .navbar a{
-    color: rgb(0, 0, 0);
+    color: rgb(209, 5, 5);
     text-decoration: none;
     font-size: 20px;
     margin: 0 10px;

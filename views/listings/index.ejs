@@ -1,47 +1,150 @@
 <% layout('/layouts/boilerplate.ejs') %>
 
+    <style>
+        #filters {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+        }
 
-    <body>
-        <h3>All Listings</h3>
-        <!-- <form action="/listings/new" method="GET">
-        
-        <button type="submit">Add listing</button>
-    </form> -->
-    
-        <div class="row row-cols-1 row-cols-md-3 g-4">
-            <% for (let listing of allListings) { %>
-                <a href="/listings/<%= listing._id %>" class="text-decoration-none text-dark">
-            <div class="card card1" style="width: 20rem;">
-                <img src="<%= listing.image.url %>" class="card-img-top" alt="<%= listing.title %>">
-                <div class="card-body">
-                   <b> <p class="card-text">Title: <%= listing.title %></b> <br>
-                            <!-- <%= listing.description %> <br> -->
-                              $<%= listing.price %>/Night<br>
-                                    <%= listing.location %> <br>
-                                        <!-- <%= listing.country %><br> -->
-                    </p>
+        .filter {
+            text-align: center;
+            margin-right: 2rem;
+            margin-top: 2rem;
+            opacity: 0.7;
+        }
+
+        .filter:hover {
+            opacity: 1;
+            cursor: pointer;
+        }
+
+        .filter p {
+            font-size: 0.8rem;
+        }
+        .tax-info{
+            display: none;
+
+        }
+        .tax-toggle{
+            border: 1px solid black;
+            border-radius: 1rem;
+            height: 3rem;
+            padding: 1rem;
+            margin-left: 2rem;
+            display: flex;
+            align-items: center;
+            background-color: rgb(192, 93, 93);
+            color: white;
+
+        }
+    </style>
 
 
+    <div id="filters">
 
-                    </p>
-                </div>
+        <div class="filter">
+            <i class="fa-solid fa-fire"></i>
+            <p>Trending</p>
+        </div>
+        <div class="filter">
+            <i class="fa-solid fa-bed"></i>
+            <p>Rooms</p>
+        </div>
+        <div class="filter">
+            <i class="fa-solid fa-city"></i>
+
+            <p>Iconic Cities</p>
+        </div>
+        <div class="filter">
+            <i class="fa-solid fa-mountain"></i>
+            <p>Mountains</p>
+        </div>
+        <div class="filter">
+            <i class="fa-solid fa-globe"></i>
+            <p>Castles</p>
+        </div>
+        <div class="filter">
+            <i class="fa-solid fa-person-swimming"></i>
+            <p>Amazing Pool</p>
+        </div>
+        <div class="filter">
+            <i class="fa-solid fa-tents"></i>
+            <p>Camping</p>
+        </div>
+        <div class="filter">
+            <i class="fa-solid fa-cow"></i>
+            <p>Farms</p>
+        </div>
+        <div class="filter">
+            <i class="fa-solid fa-snowflake"></i>
+            <p>Arctic</p>
+        </div>
+        <div class="filter">
+            <i class="fa-regular fa-moon"></i>
+            <p>Moon Light</p>
+        </div>
+        <div class="filter">
+           <i class="fa-solid fa-igloo"></i>
+            <p>Doms</p>
+        </div>
+        <div class="filter">
+          <i class="fa-solid fa-bowl-food"></i>
+            <p>Fancy Food</p>
+        </div>
+        <div class="tax-toggle">
+            <div class="form-check-reverse form-switch">
+                <input class="form-check-input" type="checkbox" role="switch" id="switchCheckDefault">
+                <label class="form-check-label" for="switchCheckDefault">Display Total after Taxes</label>
             </div>
+        </div>
+
+    </div>
+
+    <div class="row row-cols-1 row-cols-md-3 g-4 mt-1">
+        <% for (let listing of allListings) { %>
+            <a href="/listings/<%= listing._id %>" class="text-decoration-none text-dark">
+                <div class="card card1 " style="width: 20rem;">
+                    <img src="<%= listing.image.url %>" class="card-img-top" alt="<%= listing.title %>">
+                    <div class="card-body">
+                        <b>
+                            <p class="card-text">Title: <%= listing.title %>
+                        </b> <br>
+                        <!-- <%= listing.description %> <br> -->
+                        $<%= listing.price %>/Night 
+                        <i class="tax-info"> &nbsp; &nbsp;+18% GST</i><br>
+                            <%= listing.location %> <br>
+                                <!-- <%= listing.country %><br> -->
+                                </p>
+
+
+
+                                </p>
+                    </div>
+                </div>
             </a>
 
             <% } %>
 
-        </div>
+    </div>
 
+    <script>
+        let taxSwitch = document.getElementById("switchCheckDefault");
+        taxSwitch.addEventListener("click",()=>{
+            let taxInfo = document.getElementsByClassName("tax-info");
+            console.log(taxInfo);
+            for(info of taxInfo){
+                if(info.style.display != "inline"){
+                    info.style.display = "inline";
 
-                <!-- <ul>
-                    <% for(let listing of allListings) { %>
-                        <li> <a href="/listings/<%= listing._id %>">
-                                <%= listing.title %>
-                            </a> </li>
+                }else{
+                    info.style.display = "none";
+                }
+                
+            }
+        })
 
-                        <% } %>
-                </ul> -->
+    </script>
 
-    </body>
 
   

@@ -2,14 +2,25 @@ const { Listing } = require('../models/listing.js');
 
 
 module.exports.index = async (req, res) => {
-    try {
-        const allListings = await Listing.find({});
-        console.log("listing is done");
-        res.render('listings/index.ejs', { allListings });
-    } catch (err) {
-        console.error("Error fetching listings:", err);
-        res.status(500).send("Internal Server Error");
+    const { country } = req.query;
+
+    let allListings;
+
+    if (country && country.trim() !== "") {
+
+        allListings = await Listing.find({
+            country: {
+                $regex: country,
+                $options: "i"
+            }
+        });
+
+    } else {
+
+        allListings = await Listing.find({});
     }
+
+    res.render("listings/index.ejs", { allListings });
 }
 
 module.exports.renderNewForm = (req, res) => {
@@ -63,15 +74,15 @@ module.exports.editFormRender = async (req, res) => {
     try {
         const { id } = req.params;
         const listing = await Listing.findById(id);
-        if(!listing){
-            req.flash("error" , "Listing you requested for does not exist");
+        if (!listing) {
+            req.flash("error", "Listing you requested for does not exist");
             res.redirect("/listings");
         }
         let originalImageUrl = listing.image.url;
-        originalImageUrl = originalImageUrl.replace("/upload" , "/upload/w_250")
+        originalImageUrl = originalImageUrl.replace("/upload", "/upload/w_250")
 
 
-        res.render('listings/edit.ejs', { listing ,originalImageUrl });
+        res.render('listings/edit.ejs', { listing, originalImageUrl });
     } catch (err) {
         console.error("Error fetching listing for edit:", err);
         res.status(500).send("Internal Server Error");
