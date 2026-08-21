@@ -3,23 +3,17 @@ const { Listing } = require('../models/listing.js');
 
 module.exports.index = async (req, res) => {
     const { country } = req.query;
-
     let allListings;
-
     if (country && country.trim() !== "") {
-
         allListings = await Listing.find({
             country: {
                 $regex: country,
                 $options: "i"
             }
         });
-
     } else {
-
         allListings = await Listing.find({});
     }
-
     res.render("listings/index.ejs", { allListings });
 }
 
