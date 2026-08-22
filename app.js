@@ -30,7 +30,7 @@ const dbUrl = process.env.ATLASDB_URL;
 
 
 // Define the port number for the server to listen on
-const port = 8000;
+const port = process.env.PORT || 8000;
 
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
@@ -109,6 +109,10 @@ app.get("/demouser", async (req, res) => {
 app.use("/listings", listingsRouter);
 app.use("/listings/:id/reviews", reviewsRouter);
 app.use("/", userRouter);
+
+app.get("/", (req, res) => {
+    res.redirect("/listings");
+});
 
 app.all('/*splat', (req, res, next) => {
     next(new ExpressError('Page Not Found', 404));

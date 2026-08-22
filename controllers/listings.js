@@ -70,7 +70,7 @@ module.exports.editFormRender = async (req, res) => {
         const listing = await Listing.findById(id);
         if (!listing) {
             req.flash("error", "Places you requested for does not exist");
-            res.redirect("/listings");
+            return res.redirect("/listings");
         }
         let originalImageUrl = listing.image.url;
         originalImageUrl = originalImageUrl.replace("/upload", "/upload/w_250")
