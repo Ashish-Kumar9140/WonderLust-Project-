@@ -31,7 +31,7 @@ module.exports.showPage = async (req, res) => {
             .populate('owner');
 
         if (!listing) {
-            req.flash("error", "This listing does not exist");
+            req.flash("error", "This Villas does not exist");
             return res.redirect("/listings");
         }
 
@@ -53,7 +53,7 @@ module.exports.newlistingPost = async (req, res) => {
         newListing.image = { url: url, filename: filename };
         await newListing.save();
 
-        req.flash("success", " new listing Created!");
+        req.flash("success", "New Places Created!");
         res.redirect('/listings');
         console.log("New listing created successfully");
 
@@ -69,7 +69,7 @@ module.exports.editFormRender = async (req, res) => {
         const { id } = req.params;
         const listing = await Listing.findById(id);
         if (!listing) {
-            req.flash("error", "Listing you requested for does not exist");
+            req.flash("error", "Places you requested for does not exist");
             res.redirect("/listings");
         }
         let originalImageUrl = listing.image.url;
@@ -98,7 +98,7 @@ module.exports.udateEditformPUT = async (req, res) => {
             await listing.save();
         }
 
-        req.flash("success", " Updated listing!");
+        req.flash("success", " Updated!");
         res.redirect(`/listings/${id}`);
     } catch (err) {
         console.error("Error updating listing:", err);
@@ -110,7 +110,7 @@ module.exports.deleteListing = async (req, res) => {
     try {
         const { id } = req.params;
         await Listing.findByIdAndDelete(id);
-        req.flash("success", " Deleted listing!");
+        req.flash("success", " Deleted!");
         res.redirect('/listings');
 
     } catch (err) {

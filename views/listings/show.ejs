@@ -17,7 +17,7 @@
                             <%= listing.description %>
                         </p>
 
-                        <p class="card-text">Price: $<%= listing.price.toLocaleString() %>
+                        <p class="card-text">Price: $<%= listing.price.toLocaleString() %>/Night
                         </p>
                         <p class="card-text">Location: <%= listing.location %>
                         </p>
@@ -27,16 +27,16 @@
                 </div>
             </div>
             <div class="col col-md-8 offset-md-2 mt-3">
-                <a href="/listings" class="btn btn-secondary">Back to Listings</a>
+                <a href="/listings" class="btn btn-secondary">Back to Home</a>
                 <% if(currUser && currUser._id.equals(listing.owner._id)) { %>
 
 
-                    <a href="/listings/<%= listing.id %>/edit" class="btn btn-primary">Edit Listing</a>
+                    <a href="/listings/<%= listing.id %>/edit" class="btn btn-primary">Edit Details</a>
 
 
                     <form action="/listings/<%= listing.id %>?_method=DELETE" method="POST" style="display:inline;">
                         <input type="hidden" name="_method" value="DELETE">
-                        <button type="submit" class="btn btn-danger">Delete Listing</button>
+                        <button type="submit" class="btn btn-danger">Delete Places</button>
                     </form>
 
                     <% } %>
@@ -82,7 +82,7 @@
                         <div class="mb-3 mt-3">
                             <label for="comment" class="form-label">Comment:</label>
                             <textarea id="comment" name="review[comment]" required
-                                placeholder="Enter your review about this property" class="form-control"></textarea>
+                                placeholder="Your review about this property ?" class="form-control"></textarea>
 
                             <div class="valid-feedback">Looks good!</div>
                             <div class="invalid-feedback">Please enter a comment.</div>

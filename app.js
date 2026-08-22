@@ -23,7 +23,7 @@ const listingsRouter = require("./routers/listing.js");
 const reviewsRouter = require("./routers/review.js");
 const userRouter = require("./routers/user.js");
 
-
+const dbUrl = process.env.ATLASDB_URL;
 
 
 // Define the port number for the server to listen on
@@ -39,7 +39,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 
 async function main(){
-    await mongoose.connect(mon_url);
+    await mongoose.connect(ATLASDB_URL);
 }
 main().then(() => {
     console.log("MongoDB connected");

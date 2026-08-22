@@ -3,9 +3,11 @@ const initdata = require('./data.js');
 const {Listing} = require('../models/listing.js');
 
 
-const mon_url = "mongodb://127.0.0.1:27017/wanderlust1";
+// const mon_url = "mongodb://127.0.0.1:27017/wanderlust1";
+
+const dbUrl = process.env.ATLASDB_URL;
 async function main(){
-    await mongoose.connect(mon_url);
+    await mongoose.connect(ATLASDB_URL);
 }
 main().then(() => {
     console.log("MongoDB connected successfully");

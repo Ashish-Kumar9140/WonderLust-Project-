@@ -5,7 +5,7 @@
         <form action="/listings/<%= listing.id %>?_method=PUT" method="POST" novalidate class="needs-validation" enctype="multipart/form-data">
             <div class="row">
                 <div class="col col-md-8 offset-md-2">
-                    <h1>Edit Listing</h1>
+                    <h1>Edit Your Villas & Places Details</h1>
                     <div class="mb-3">
                         <label for="title" class="form-label">Title:</label>
                         <input type="text" id="title" name="title" value="<%= listing.title %>" class="form-control"
@@ -23,7 +23,7 @@
                     </div>
 
                     <div class="mb-3">
-                        <label for="image" class="form-label">Old Listing Image</label> <br>
+                        <label for="image" class="form-label">Old Image</label> <br>
                         <img class="editImage" src="<%= originalImageUrl %>" alt="old Listing Image">
                     </div>
 
@@ -60,7 +60,7 @@
                         <div class="valid-feedback">Good country!</div>
                         <div class="invalid-feedback">Please enter a country.</div>
                     </div>
-                    <button type="submit" class="btn btn-primary">Update Listing</button>
+                    <button type="submit" class="btn btn-primary">Update</button>
                 </div>
             </div>
         </form>
