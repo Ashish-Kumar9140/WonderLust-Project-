@@ -7,7 +7,7 @@ const {Listing} = require('../models/listing.js');
 
 const dbUrl = process.env.ATLASDB_URL;
 async function main(){
-    await mongoose.connect(ATLASDB_URL);
+    await mongoose.connect(dbUrl);
 }
 main().then(() => {
     console.log("MongoDB connected successfully");
